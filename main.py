@@ -1,11 +1,9 @@
-from direct.showbase.ShowBase import ShowBase
+from BulletHellGame import BulletHellGame
+from src.ecs.entity_manager import EntityManager
+from src.ecs.system_manager import SystemManager
 
+entity_manager = EntityManager()
+system_manager = SystemManager()
 
-class BulletHell(ShowBase):
-
-    def __init__(self):
-        super().__init__()
-
-
-game = BulletHell()
+game = BulletHellGame(entity_manager, system_manager)
 game.run()
