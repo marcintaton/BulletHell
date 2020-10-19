@@ -8,7 +8,9 @@ class Entity:
         return any(isinstance(x, type) for x in self.components)
 
     def add_component(self, type, *args):
-        self.components.append(type(self, *args))
+        component = type(self, *args)
+        self.components.append(component)
+        return component
 
     def get_component(self, type):
         return next(x for x in self.components if isinstance(x, type))

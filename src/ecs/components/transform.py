@@ -1,5 +1,6 @@
 from panda3d.core import LVector3f
 from src.ecs.component import Component
+import math
 
 DEPTH = 50
 
@@ -19,3 +20,11 @@ class Transform(Component):
 
     def set_rotation(self, rot):
         self.rotation = LVector3f(0, 0, rot)
+
+    def forward(self):
+        print(self.rotation)
+        angle = self.rotation.z * math.pi / 180
+        forward_x = 1 / \
+            (1 + math.pow(math.tan(angle), 2))
+        forward_z = forward_x * math.tan(angle)
+        return LVector3f(forward_z, 0, forward_x)

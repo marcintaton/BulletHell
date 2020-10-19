@@ -15,6 +15,7 @@ from src.ecs.components.transform import Transform
 from src.ecs.systems.positioning_system import PositioningSystem
 from src.ecs.systems.player_input_system import PlayerInputSystem
 from src.ecs.systems.movement_system import MovementSystem
+from src.ecs.systems.player_shooting_system import PlayerShootingSystem
 from panda3d.core import LVecBase3f
 
 
@@ -74,8 +75,9 @@ class BulletHellGame(ShowBase):
         self.sample_text = OnscreenText(text="0", parent=self.base.a2dTopLeft, pos=(0.07, -.06 * 0 - 0.1),
                                         fg=(1, 1, 1, 1), align=TextNode.ALeft, shadow=(0, 0, 0, 0.5), scale=.05, mayChange=1)
 
-        plane_model = loader.loadModel("models/plane")
-        textue = loader.loadTexture("textures/ship.png")
+        self.plane_model = loader.loadModel("models/plane")
+        self.texture = loader.loadTexture("textures/ship.png")
+        self.bullet_texture = loader.loadTexture("textures/bullet.png")
 
         # input handling setup
         self.player_input = {"left": 0, "right": 0,
@@ -99,9 +101,11 @@ class BulletHellGame(ShowBase):
         self.system_manager.add_system(plInput)
         self.system_manager.add_system(MovementSystem(self.entity_manager))
         self.system_manager.add_system(PositioningSystem(self.entity_manager))
+        self.system_manager.add_system(
+            PlayerShootingSystem(self.entity_manager))
 
         # player
-        self.player = PlayerFactory.create_player(plane_model, textue)
+        self.player = PlayerFactory.create_player(self.texture)
         self.entity_manager.add_entity(self.player)
 
     def setInputValue(self, input, val):
