@@ -19,4 +19,4 @@ class PositioningSystem(System):
         for transform, sprite in zip(self.components[0], self.components[1]):
             sprite.render_object.setPos(transform.position)
             sprite.render_object.setScale(transform.scale)
-            sprite.render_object.setHpr(transform.rotation)
+            sprite.render_object.setR(transform.rotation)

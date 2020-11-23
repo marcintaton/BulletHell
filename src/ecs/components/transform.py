@@ -9,7 +9,7 @@ class Transform(Component):
     def __init__(self, parent, x=0, y=0, rotation=0, scale_x=1, scale_y=1):
         super().__init__(parent)
         self.position = LVector3f(x, DEPTH, y)
-        self.rotation = LVector3f(0, 0, rotation)
+        self.rotation = rotation
         self.scale = LVector3f(scale_x, 1, scale_y)
 
     def set_position(self, x, y):
@@ -19,12 +19,14 @@ class Transform(Component):
         self.scale = LVector3f(x, 1, y)
 
     def set_rotation(self, rot):
-        self.rotation = LVector3f(0, 0, rot)
+        if rot < 0:
+            rot = 360 + rot
+        self.rotation = rot
 
     def forward(self):
-        print(self.rotation)
-        angle = self.rotation.z * math.pi / 180
-        forward_x = 1 / \
-            (1 + math.pow(math.tan(angle), 2))
-        forward_z = forward_x * math.tan(angle)
-        return LVector3f(forward_z, 0, forward_x)
+        angle = math.radians(self.rotation)
+        forward_x = math.sin(angle)
+        forward_z = math.cos(angle)
+        # print(self.rotation, angle, LVector3f(forward_x, 0, forward_z))
+        # print(self.position)
+        return LVector3f(forward_x, 0, forward_z)

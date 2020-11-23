@@ -4,6 +4,8 @@ from src.ecs.components.movement import Movement
 from src.ecs.components.player_data import PlayerData
 from panda3d.core import LVector3f
 from panda3d.core import LVector2f
+from panda3d.core import Point3
+from panda3d.core import Point2
 
 
 class PlayerInputSystem(System):
@@ -16,6 +18,9 @@ class PlayerInputSystem(System):
 
     def set_player_input(self, player_input):
         self.player_input = player_input
+
+    def set_base(self, base):
+        self.base = base
 
     def execute(self):
         super().import_components()
@@ -38,8 +43,18 @@ class PlayerInputSystem(System):
             player_vector = LVector2f(
                 transform.position.x, transform.position.z)
 
-            mouse_angle = LVector2f(mouse_x - transform.position.x / 10, mouse_y - transform.position.z / 10).signedAngleDeg(
-                LVector2f(0, 1))
+            mouse = Point2(mouse_x, mouse_y)
+            pFrom = Point3()
+            pTo = Point3()
+            self.base.camLens.extrude(mouse, pFrom, pTo)
+            pFrom = render.getRelativePoint(self.base.cam, pFrom)
+            pTo = render.getRelativePoint(self.base.cam, pTo)
+            pFrom = LVector2f(pFrom.x, pFrom.z)
+            pFrom *= 50
+            pFrom -= player_vector
+
+            mouse_angle = pFrom.signedAngleDeg(
+                LVector2f(LVector2f(0, 1)))
             transform.set_rotation(mouse_angle)
 
             player_data.requests_fire = bool(fire)

@@ -98,6 +98,8 @@ class BulletHellGame(ShowBase):
         # systems
         plInput = PlayerInputSystem(self.entity_manager)
         plInput.set_player_input(self.player_input)
+        plInput.set_base(self.base)
+
         self.system_manager.add_system(plInput)
         self.system_manager.add_system(MovementSystem(self.entity_manager))
         self.system_manager.add_system(PositioningSystem(self.entity_manager))
