@@ -13,3 +13,6 @@ class Sprite(Component):
         self.render_object.setDepthTest(False)
         self.render_object.setTransparency(TransparencyAttrib.MAlpha)
         self.render_object.setTexture(self.texture, 1)
+
+    def on_delete(self):
+        self.render_object.removeNode()

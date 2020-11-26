@@ -23,10 +23,30 @@ class Transform(Component):
             rot = 360 + rot
         self.rotation = rot
 
+    @property
     def forward(self):
         angle = math.radians(self.rotation)
-        forward_x = math.sin(angle)
-        forward_z = math.cos(angle)
-        # print(self.rotation, angle, LVector3f(forward_x, 0, forward_z))
-        # print(self.position)
-        return LVector3f(forward_x, 0, forward_z)
+        x = math.sin(angle)
+        z = math.cos(angle)
+        return LVector3f(x, 0, z)
+
+    @property
+    def right(self):
+        angle = math.radians(self.rotation+90)
+        x = math.sin(angle)
+        z = math.cos(angle)
+        return LVector3f(x, 0, z)
+
+    @property
+    def left(self):
+        angle = math.radians(self.rotation+270)
+        x = math.sin(angle)
+        z = math.cos(angle)
+        return LVector3f(x, 0, z)
+
+    @property
+    def backward(self):
+        angle = math.radians(self.rotation+180)
+        x = math.sin(angle)
+        z = math.cos(angle)
+        return LVector3f(x, 0, z)

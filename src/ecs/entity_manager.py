@@ -24,6 +24,7 @@ class EntityManager:
     def remove_inactive_ents(self):
         for entity in self.entities:
             if not entity.active:
+                entity.delete()
                 self.entities.remove(entity)
 
     def add_component_refs(self):

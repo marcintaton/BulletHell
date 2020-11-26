@@ -7,7 +7,7 @@ class Movement(Component):
     def __init__(self, parent):
         super().__init__(parent)
         self.movement_vector = LVecBase3f(0, 0, 0)
-        self.rotation = 0
+        self.rotation_vector = 0
 
     def set_movement(self, x, y, speed=1):
         self.movement_vector = LVecBase3f(x, 0, y).normalized() * speed

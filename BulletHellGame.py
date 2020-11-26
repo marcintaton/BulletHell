@@ -10,12 +10,18 @@ import sys
 
 # temp imports refactor and remove later
 from src.factories.player_factory import PlayerFactory
+from src.factories.enviro_factory import EnviroFactory
+from src.factories.enemy_factory import EnemyFactory
+
 from src.ecs.components.sprite import Sprite
 from src.ecs.components.transform import Transform
+
 from src.ecs.systems.positioning_system import PositioningSystem
 from src.ecs.systems.player_input_system import PlayerInputSystem
 from src.ecs.systems.movement_system import MovementSystem
 from src.ecs.systems.player_shooting_system import PlayerShootingSystem
+from src.ecs.systems.collision_system import CollisionSystem
+from src.ecs.systems.enemy_management_system import EnemyManagementSystem
 from panda3d.core import LVecBase3f
 
 
@@ -76,8 +82,12 @@ class BulletHellGame(ShowBase):
                                         fg=(1, 1, 1, 1), align=TextNode.ALeft, shadow=(0, 0, 0, 0.5), scale=.05, mayChange=1)
 
         self.plane_model = loader.loadModel("models/plane")
-        self.texture = loader.loadTexture("textures/ship.png")
+        self.player_texture = loader.loadTexture("textures/ship.png")
         self.bullet_texture = loader.loadTexture("textures/bullet.png")
+        self.wall_texture = loader.loadTexture("textures/wall.png")
+        self.enemy_texture = loader.loadTexture("textures/enemy_turret.png")
+        self.orange_bullet_texture = loader.loadTexture(
+            "textures/orange_bullet.png")
 
         # input handling setup
         self.player_input = {"left": 0, "right": 0,
@@ -105,10 +115,26 @@ class BulletHellGame(ShowBase):
         self.system_manager.add_system(PositioningSystem(self.entity_manager))
         self.system_manager.add_system(
             PlayerShootingSystem(self.entity_manager))
+        self.system_manager.add_system(CollisionSystem(self.entity_manager))
+        self.system_manager.add_system(
+            EnemyManagementSystem(self.entity_manager))
 
+        # entities
         # player
-        self.player = PlayerFactory.create_player(self.texture)
+        self.player = PlayerFactory.create_player(self.player_texture)
         self.entity_manager.add_entity(self.player)
+
+        wall0 = EnviroFactory.create_wall(10, 0, 0, 1, 21, self.wall_texture)
+        wall1 = EnviroFactory.create_wall(-10, 0, 0, 1, 21, self.wall_texture)
+        wall2 = EnviroFactory.create_wall(0, 10, 0, 21, 1, self.wall_texture)
+        wall3 = EnviroFactory.create_wall(0, -10, 0, 21, 1, self.wall_texture)
+        self.entity_manager.add_entity(wall0)
+        self.entity_manager.add_entity(wall1)
+        self.entity_manager.add_entity(wall2)
+        self.entity_manager.add_entity(wall3)
+
+        enemy1 = EnemyFactory.create_turret(5, 5, self.enemy_texture)
+        self.entity_manager.add_entity(enemy1)
 
     def setInputValue(self, input, val):
         self.player_input[input] = val

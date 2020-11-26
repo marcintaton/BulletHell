@@ -18,3 +18,7 @@ class Entity:
     def remove_component(self, type):
         self.components = [
             x for x in self.components if not isinstance(x, type)]
+
+    def delete(self):
+        for c in self.components:
+            c.on_delete()
