@@ -4,6 +4,7 @@ from src.ecs.components.box_collider import BoxCollider
 from src.ecs.components.movement import Movement
 from src.ecs.components.enemy_data import EnemyData
 from src.utilities.tag_manager import TagManager
+from src.ecs.components.player_data import PlayerData
 
 
 class CollisionSystem(System):
@@ -37,6 +38,11 @@ class CollisionSystem(System):
                            TagManager.enemy_bullet_orange]
         walls = self.box_colliders
 
+        print(len(enemies))
+
+        if len(enemies) is 0:
+            player.parent.get_component(PlayerData).won = True
+
         for wall in walls:
             if (wall.is_colliding(player)):
                 self.AABBPushOut(wall, player)
@@ -57,9 +63,7 @@ class CollisionSystem(System):
                     bullet.parent.active = False
 
             if bullet.is_colliding(player):
-                pass
-                # death
-                # player.parent.active = False
+                player.parent.get_component(PlayerData).defeated = True
 
     def AABBPushOut(self, wall, player):
         player_trans = player.transform

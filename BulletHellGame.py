@@ -23,10 +23,14 @@ from src.ecs.systems.movement_system import MovementSystem
 from src.ecs.systems.player_shooting_system import PlayerShootingSystem
 from src.ecs.systems.collision_system import CollisionSystem
 from src.ecs.systems.enemy_management_system import EnemyManagementSystem
+from src.ecs.systems.level_complete_system import LevelCompleteSystem
+
 from panda3d.core import LVecBase3f
 
 
 class BulletHellGame(ShowBase):
+
+    Instance = None
 
     def __init__(self, entity_manager, system_manager):
         ShowBase.__init__(self)
@@ -37,6 +41,9 @@ class BulletHellGame(ShowBase):
         self.game_loop_running = False
         globalClock.setMode(ClockObject.MLimited)
         globalClock.setFrameRate(60)
+        #
+        if BulletHellGame.Instance is None:
+            BulletHellGame.Instance = self
         #
         self.temporatySetup()
 
@@ -122,6 +129,8 @@ class BulletHellGame(ShowBase):
         self.system_manager.add_system(CollisionSystem(self.entity_manager))
         self.system_manager.add_system(
             EnemyManagementSystem(self.entity_manager))
+        self.system_manager.add_system(
+            LevelCompleteSystem(self.entity_manager))
 
         # entities
         # player
@@ -142,3 +151,9 @@ class BulletHellGame(ShowBase):
 
     def setInputValue(self, input, val):
         self.player_input[input] = val
+
+    def onPlayerDeath(self):
+        print("Git gud")
+
+    def onLevelComplete(self):
+        print("Got gud")

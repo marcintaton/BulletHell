@@ -11,3 +11,5 @@ class PlayerData(Component):
         self.requests_fire = False
         self.fire_interval = 0.1
         self.current_fire_interval = 0
+        self.defeated = False
+        self.won = False
