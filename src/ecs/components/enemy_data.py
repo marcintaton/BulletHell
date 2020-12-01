@@ -8,5 +8,5 @@ class EnemyData(Component):
         self.hit_points = hp
         self.was_hit = False
         self.shooting_directions = shooting_directions
-        self.fire_interval = 0.3
+        self.fire_interval = 0.6
         self.current_fire_interval = 0

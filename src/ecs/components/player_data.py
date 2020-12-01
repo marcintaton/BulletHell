@@ -9,5 +9,5 @@ class PlayerData(Component):
         self.current_hp = self.max_hp
         self.speed = 10
         self.requests_fire = False
-        self.fire_interval = 0.05
+        self.fire_interval = 0.1
         self.current_fire_interval = 0

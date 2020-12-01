@@ -17,6 +17,5 @@ class MovementSystem(System):
 
     def apply_movement(self):
         for transform, movement in zip(self.components[0], self.components[1]):
-            print(transform.rotation, movement.rotation_vector)
             transform.position += movement.movement_vector
             transform.rotation += movement.rotation_vector

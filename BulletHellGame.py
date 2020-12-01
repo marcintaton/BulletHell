@@ -6,6 +6,7 @@ from direct.task import Task
 from direct.gui.OnscreenText import OnscreenText
 from panda3d.core import WindowProperties
 from panda3d.core import GraphicsWindow
+from panda3d.core import ClockObject
 import sys
 
 # temp imports refactor and remove later
@@ -34,6 +35,9 @@ class BulletHellGame(ShowBase):
         self.entity_manager = entity_manager
         self.system_manager = system_manager
         self.game_loop_running = False
+        globalClock.setMode(ClockObject.MLimited)
+        globalClock.setFrameRate(60)
+        #
         self.temporatySetup()
 
     def run(self):
@@ -57,7 +61,7 @@ class BulletHellGame(ShowBase):
         while self.game_loop_running:
 
             timer += globalClock.getDt()
-            self.sample_text.setText(str(timer))
+            self.sample_text.setText(str(1 / globalClock.getDt()))
 
             self.handleEvents()
 

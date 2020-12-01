@@ -28,7 +28,6 @@ class EnemyManagementSystem(System):
 
     def resolve_shots(self):
         for enemy_data, transform in zip(self.components[0], self.components[1]):
-            print(transform.rotation)
             if enemy_data.fire_interval < enemy_data.current_fire_interval:
                 self.ecs_manager.add_entity(BulletFactory.create_orange_bullet(
                     transform.position.x + transform.right.x, transform.position.z + transform.right.z, base.orange_bullet_texture, transform.right.x, transform.right.z))
