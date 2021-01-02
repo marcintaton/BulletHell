@@ -20,6 +20,8 @@ class LevelCompleteSystem(System):
         player_data = self.components[0][0]
 
         if player_data.defeated == True:
+            player_data.defeated = False
             BulletHellGame.BulletHellGame.Instance.onPlayerDeath()
         elif player_data.won == True:
+            player_data.won = False
             BulletHellGame.BulletHellGame.Instance.onLevelComplete()

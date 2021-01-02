@@ -39,8 +39,11 @@ class BulletHellGame(ShowBase):
         self.entity_manager = entity_manager
         self.system_manager = system_manager
         self.game_loop_running = False
+        self.level_index = 0
+        self.ui_text = "Kappa123"
         globalClock.setMode(ClockObject.MLimited)
         globalClock.setFrameRate(60)
+        globalClock
         #
         if BulletHellGame.Instance is None:
             BulletHellGame.Instance = self
@@ -68,7 +71,7 @@ class BulletHellGame(ShowBase):
         while self.game_loop_running:
 
             timer += globalClock.getDt()
-            self.sample_text.setText(str(1 / globalClock.getDt()))
+            self.sample_text.setText(self.ui_text)
 
             self.handleEvents()
 
@@ -146,14 +149,36 @@ class BulletHellGame(ShowBase):
         self.entity_manager.add_entity(wall2)
         self.entity_manager.add_entity(wall3)
 
+        self.level_array = [self.setupLvl1, self.setupLvl2]
+
+        self.level_array[self.level_index]()
+
+    def setupLvl1(self):
+        self.level_index = 1
+        self.ui_text = "Level " + str(self.level_index)
+        self.player.get_component(Transform).set_position(0, 0)
         enemy1 = EnemyFactory.create_turret(5, 5, self.enemy_texture)
         self.entity_manager.add_entity(enemy1)
+
+    def setupLvl2(self):
+        self.level_index = 2
+        self.ui_text = "Level " + str(self.level_index)
+        self.player.get_component(Transform).set_position(0, 0)
+        enemy1 = EnemyFactory.create_turret(5, 5, self.enemy_texture)
+        enemy2 = EnemyFactory.create_turret(-5, -5, self.enemy_texture)
+        self.entity_manager.add_entity(enemy1)
+        self.entity_manager.add_entity(enemy2)
 
     def setInputValue(self, input, val):
         self.player_input[input] = val
 
     def onPlayerDeath(self):
-        print("Git gud")
+        self.player.active = False
+        self.system_manager.active = False
+        self.ui_text = "Game Over"
 
     def onLevelComplete(self):
-        print("Got gud")
+        if self.level_index < len(self.level_array):
+            self.level_array[self.level_index]()
+        else:
+            self.ui_text = "Game completed"
