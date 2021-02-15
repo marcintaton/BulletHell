@@ -164,8 +164,8 @@ class BulletHellGame(ShowBase):
         self.level_index = 2
         self.ui_text = "Level " + str(self.level_index)
         self.player.get_component(Transform).set_position(0, 0)
-        enemy1 = EnemyFactory.create_turret(5, 5, self.enemy_texture)
-        enemy2 = EnemyFactory.create_turret(-5, -5, self.enemy_texture)
+        enemy1 = EnemyFactory.create_turret(-5, 5, self.enemy_texture)
+        enemy2 = EnemyFactory.create_turret(5, -5, self.enemy_texture)
         self.entity_manager.add_entity(enemy1)
         self.entity_manager.add_entity(enemy2)
 
